@@ -1,6 +1,7 @@
 import json
 import re
 import difflib
+import calendar
 import xlrd
 import xlwt
 from functools import reduce
@@ -8,7 +9,7 @@ import time
 from datetime import datetime, timedelta
 from itertools import compress
 import functools
-
+import datetime
 
 def _map():
     def multiply(x):
@@ -178,6 +179,71 @@ def same_radio():
 
 # 代码开始的地方
 if __name__ == '__main__':
+    # %s可以对给的值进行操作，format可以任意操作
+    sub1 = ('first', 'second', 'third')
+    sub2 = [1, 2, 3, 4, 5]
+    a = "i am a %s" % (sub1,)  # tuple特殊
+    b = "i am a {0}".format(*sub1)  # 否则打印全部
+    print(a)
+    print(b)
+    print("idfddf  %s" % sub2[1])
+    c = "hi there %(key)s!" % {'key': sub2}
+    d = "hi there {key}!".format(key=sub2)
+    print(c)
+    print(d)
+
+    # 1 切片对于str和tuple都可以
+    L = list(range(20))
+    # 切片, 取前5个，后5个，取前10个偶数
+    print('前5个%s,后5个%s,取偶数%s' % (L[:5], L[-5:], L[0:10:2]))
+    d = {'a': 1, 'b': 2, 'c': 3}
+    for s in d:
+        print(s)
+    # 1 生成器
+    g = (x * x for x in range(10))
+    for li in g:
+        print(li)
+
+    # 2 迭代器 斐波拉契数列（Fibonacci）
+    def fib(max):
+        n, a, b = 0, 0, 1
+        while n < max:
+            yield b
+            a, b = b, a + b
+            n = n + 1
+        return 'done'
+    # 无return
+    for n in fib(6):
+        print(n)
+    # 有return
+
+    try:
+        x = next(g)
+        print('g:', x)
+    except StopIteration as e:
+        print('Generator return value:', e.value)
+
+    # 直接作用于for循环的对象统称为可迭代对象：Iterable
+    from collections import Iterable
+    isinstance([], Iterable)  # 判断是否为迭代器
+    # 可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator
+    for x in [1, 2, 3, 4, 5]:
+        pass
+    # 实际上完全等价于：
+
+    # 首先获得Iterator对象:
+    it = iter([1, 2, 3, 4, 5])
+    # 循环:
+    while True:
+        try:
+            # 获得下一个值:
+            x = next(it)
+        except StopIteration:
+            # 遇到StopIteration就退出循环
+            break
+    # firstDay = datetime.date(year=2017, month=2, day=1)
+    firstDayWeekDay, monthRange = calendar.monthrange(2017, 2)
+    print(firstDayWeekDay, monthRange)
     ba = int('12345')  # 默认为10
     ba = int('12345', base=8)
     shilu = int('12345', 16)
